@@ -3,8 +3,6 @@ package main
 import (
 	"os"
 	"fmt"
-	"bytes"
-	
 )
 
 func main() {
@@ -19,8 +17,8 @@ func main() {
 }
 
 func check_annagrams(word1 string, word2 string) bool {
-	for i, j := 0, len(word2) - 1; i < j; i,j = i+1,j-1 {
-		if word1[i] != word2 {
+	for i, j := 0, len(word2) - 1; i < len(word2) ; i,j = i+1,j-1 {
+		if word1[i] != word2[j] {
 			return false
 		}
 	}
