@@ -16,12 +16,12 @@ func main() {
 	} else {
 		//iterate through args
 		for i := 1; i < len(os.Args); i++ {
-			fmt.Println(addCommas(os.Args[i]))
+			addCommas(os.Args[i])
 		}
 	}
 }
 
-func addCommas(word string) string {
+func addCommas(word string) {
 	var buf bytes.Buffer
 	byteArray := []byte(word)
 	found, count := false, 0
@@ -39,14 +39,17 @@ func addCommas(word string) string {
 				buf.WriteByte(byteArray[j])
 			}
 		}
-	return reverseBuf(&buf).String()
+
+	 reverseBuf(&buf)
+	 fmt.Println(&buf)
+	 // return buf.String()
 }
 
-func reverseBuf(buffer *bytes.Buffer) *bytes.Buffer {
+func reverseBuf(buffer *bytes.Buffer) {
 	var newBuf bytes.Buffer
 	newByteArr := buffer.Bytes()
 	for i := len(newByteArr) -1 ; i >= 0; i-- {
 		newBuf.WriteByte(newByteArr[i])
 	}
-	return &newBuf
+	*buffer = newBuf
 }
