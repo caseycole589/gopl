@@ -41,6 +41,7 @@ func addCommas(word string) {
 		}
 
 	 reverseBuf(&buf)
+	 // fmt.Println(buf.String())
 	 fmt.Println(&buf)
 	 // return buf.String()
 }
