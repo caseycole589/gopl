@@ -14,6 +14,7 @@ func reverse(b []byte) []byte {
 	//going to need to copy it
 	for j:=len(b)-1; j > 1 ;j-- {
 		out = append (out,b[j])
+
 	}
 	return out
 }
