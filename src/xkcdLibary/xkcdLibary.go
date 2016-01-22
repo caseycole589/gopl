@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-	"fmt"
 	"strconv"
+	"fmt"
+	"io/ioutil"
 )
-
 
 type Comic struct {
 	Num int
@@ -16,7 +16,28 @@ type Comic struct {
 	Title string 
 }
 
-func GetAllComicsIndexes() (*[]Comic, error) {
+type ComicList struct {
+	Comics []Comic
+}
+
+func GetTranscript(url string) (string,error) {
+	var transcript struct{ Transcript string}
+	resp, err := http.Get(url);
+	if resp.StatusCode != http.StatusOK {
+		resp.Body.Close()
+		return "error", err
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&transcript); err != nil {
+		resp.Body.Close()
+		return "error", err
+	}
+	resp.Body.Close()
+	fmt.Println(transcript.Transcript)
+	return transcript.Transcript,nil
+}
+
+func GetAllComicsIndexes() (*ComicList, error) {
 
 	q := "http://xkcd.com/info.0.json"
 	resp, err := http.Get(q);
@@ -32,7 +53,8 @@ func GetAllComicsIndexes() (*[]Comic, error) {
 		return nil, err
 	}
 	resp.Body.Close()
-	
+
+	latest.Url = q;
 	comicList := make([]Comic,latest.Num) 
 	comicList[0] = latest
 	
@@ -44,7 +66,7 @@ func GetAllComicsIndexes() (*[]Comic, error) {
 			continue
 		}
 		resquest[1] = strconv.Itoa(i)
-		resp, err := http.Get(strings.Join(resquest,""));
+		resp, err := http.Get(strings.Join(resquest,""))
 
 		if resp.StatusCode != http.StatusOK {
 			resp.Body.Close()
@@ -56,7 +78,23 @@ func GetAllComicsIndexes() (*[]Comic, error) {
 			return nil, err
 		}
 		resp.Body.Close()
+		next.Url = strings.Join(resquest,"")
 		comicList[i] = next
 	}
-	return &comicList, nil
+	var x ComicList 
+	x.Comics = comicList
+	fmt.Println(x.Comics)
+	return &x, nil
+}
+
+func GetComics() (*ComicList, error) {
+	
+	file,err := ioutil.ReadFile("xkcdIndex.json")
+	if err != nil {
+		return nil, err
+	}
+	
+	var comics ComicList
+	json.Unmarshal(file, &comics)
+	return &comics, nil
 }
