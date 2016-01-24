@@ -83,7 +83,6 @@ func GetAllComicsIndexes() (*ComicList, error) {
 	}
 	var x ComicList 
 	x.Comics = comicList
-	fmt.Println(x.Comics)
 	return &x, nil
 }
 

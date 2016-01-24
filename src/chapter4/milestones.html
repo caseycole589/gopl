@@ -1,0 +1,21 @@
+<h1>milestones</h1>
+
+<table>
+	<tr style='text-align:left'>
+		<th>#</th>
+		<th>State</th>
+		<th>Title</th>
+		<th>Created</th>
+		<th>Description</th>
+	</tr>
+	{{range.Items}}
+
+	<tr>
+		<td><a href='{{.Milestone.HTMLURL}}'>{{.Number}}</a></td>
+		<td>{{.Milestone.State}}</td>
+		<td><a href='{{.Milestone.HTMLURL}}'>{{.Title}}</a></td>
+		<td>Created At: {{.Milestone.CreatedAt}}</td>
+		<td>Description: {{.Milestone.Description}}</td>
+	</tr>
+	{{end}}
+</table>

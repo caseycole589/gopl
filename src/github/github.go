@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"time"
 	"strings"
-	
+	// "fmt"
 )
 
 const IssuesURL = "https://api.github.com/search/issues"
@@ -26,15 +26,25 @@ type Issue struct {
 	Title string 
 	State string 
 	User *User
+	Milestone *Milestone
 	CreatedAt time.Time `json:"created_at"` 
 	Body string //in markdown format
+	MILESTONEURL string `json:"milestones_url`
+	CONTRIBUTORSURL string `json: "contributors_url"`
 }
 
 type User struct {
 	Login string
-	HTMLURL string `"json:html_url"`
+	HTMLURL string `json:"html_url"`
 }
-
+type Milestone struct {
+	HTMLURL string `json:"html_url"`
+	State string
+	Title string
+	Description string
+	CreatedAt time.Time `json:"created_at"`
+	Number int
+}
 //search issues queries the github issue tracker
 func SearchIssues(terms []string) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(strings.Join(terms, " ")) // terms could have special charcaters like ? &
@@ -49,7 +59,6 @@ func SearchIssues(terms []string) (*IssuesSearchResult, error) {
 		resp.Body.Close()
 		return nil, err
 	}
-
 	var result IssuesSearchResult
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		resp.Body.Close()

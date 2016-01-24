@@ -19,11 +19,15 @@ func main() {
 		log.Fatal("Error: %s",err)
 	}
 	for _,e := range os.Args[1:] {
-		fmt.Println(e);
+		
 	}
-	
-
+	for i, e := range c.Comics {
+		if i != 404 {
+			xkcdLibary.GetTranscript(e.Url)
+		}
+	}
 }
+
 
 func buildIndex(name string) {
 	result,err := xkcdLibary.GetAllComicsIndexes();

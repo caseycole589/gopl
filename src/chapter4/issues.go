@@ -53,3 +53,8 @@ func main() {
 			item.Number, item.User.Login, item.Title)
 	}
 }
+
+
+func daysAgo(t time.Time) int {
+	return int(time.Since(t).Hours() / 24)
+}
